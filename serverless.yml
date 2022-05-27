@@ -1,5 +1,5 @@
 org: abdennour
-app: contac-us
+app: revampr
 service: contact-us
 frameworkVersion: '3'
 provider:
