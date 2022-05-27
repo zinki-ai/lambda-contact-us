@@ -59,3 +59,5 @@ typings/
 
 # babel build folder
 dist
+
+.serverless/**
