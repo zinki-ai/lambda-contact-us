@@ -19,4 +19,17 @@ functions:
       - httpApi:
           path: /v1/contactus
           method: POST
-          # cors: true
+          cors:
+            allowedOrigins:
+              - http://127.0.0.1:5500
+              - https://revampr.com
+            allowedHeaders:
+              - Content-Type
+              - Accept
+              - Authorization
+            allowedMethods:
+              - POST
+            allowCredentials: true
+            exposedResponseHeaders:
+              - Special-Response-Header
+            maxAge: 6000 # In seconds

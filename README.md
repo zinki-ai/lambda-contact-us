@@ -12,3 +12,8 @@ npm install
 export username=xyz@example.com password=xyz receivingEmail=xyz@example.com
 sls offline
 
+validate:
+
+```sh
+curl -X POST https://mxd8l6ygq1.execute-api.us-west-2.amazonaws.com/v1/contactus -d '{"name": "Abdennour Test v2", "subject": "My Subject is simple v2", "message": "Any message v2", "email": "any@example.com"}' -H 'Accept: application/json' -H 'Content-Type: application/json' 
+```
