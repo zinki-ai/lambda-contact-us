@@ -5,6 +5,7 @@ const Response = require("./services/response");
 const { sendEmail } = require("./services/email");
 
 module.exports.sendContact = async (event, context, callback) => {
+  // event.headers.origin / event.headers.referer
   context.callbackWaitsForEmptyEventLoop = false;
   const res = Response(callback);
 
@@ -27,7 +28,7 @@ module.exports.sendContact = async (event, context, callback) => {
         </html>
       `;
       const text = `name: ${name} \n email: ${email} \n phone: ${phone} \n subject: ${subject} \n message: ${message} \n`;
-      await sendEmail(`Contact Us Revampr - ${subject}`, html, text, {
+      await sendEmail(`Contact Us ${env.process.servicename} - ${subject}`, html, text, {
         from: `${name} <${process.env.receivingEmail}>`,
         to: process.env.receivingEmail
       });

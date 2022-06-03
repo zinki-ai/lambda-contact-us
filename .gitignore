@@ -56,7 +56,8 @@ typings/
 
 # dotenv environment variables file
 .env
-
+.env.*.yml
+!.env.example.yml
 # babel build folder
 dist
 
