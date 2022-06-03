@@ -7,7 +7,9 @@ provider:
   stage: local
   runtime: nodejs14.x
   region: us-west-2
-
+custom:
+  # local, revampr or zinki
+  stage: ${opt:stage, self:provider.stage}
 plugins:
   - serverless-dotenv-plugin
   - serverless-offline
@@ -15,6 +17,7 @@ functions:
   sendContact:
     handler: src/handler.sendContact
     description: send contact information for contact us form
+    environment: ${file(.env.${self:custom.stage}.yml)}
     events:
       - httpApi:
           path: /v1/contactus
@@ -23,6 +26,8 @@ functions:
             allowedOrigins:
               - http://127.0.0.1:5500
               - https://revampr.com
+              - https://zinki.ai
+              - https://devrev-997620.ingress-baronn.easywp.com
             allowedHeaders:
               - Content-Type
               - Accept
@@ -33,3 +38,21 @@ functions:
             exposedResponseHeaders:
               - Special-Response-Header
             maxAge: 6000 # In seconds
+  # send-contact:
+  #   handler: src/handler.sendContact
+  #   url:
+  #     cors:
+  #       allowedOrigins:
+  #         - http://127.0.0.1:5500
+  #         - https://revampr.com
+  #         - https://www.revampr.com
+  #       allowedHeaders:
+  #         - Content-Type
+  #         - Accept
+  #         - Authorization
+  #       allowedMethods:
+  #         - POST
+  #       allowCredentials: true
+  #       exposedResponseHeaders:
+  #         - Special-Response-Header
+  #       maxAge: 6000 # In seconds

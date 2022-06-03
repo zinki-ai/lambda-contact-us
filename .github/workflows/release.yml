@@ -12,6 +12,8 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x]
+        # Adding other services here (like zinki)
+        stage: [revampr]
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -20,16 +22,17 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Install NPM dependencies
       run: npm ci
-    - name: 'Create env file'
+    - name: Compute intermediate env vars
       run: |
-        touch .env
-        echo username=${{ secrets.EMAIL_USERNAME }} >> .env
-        echo password=${{ secrets.EMAIL_PASS }} >> .env
-        echo receivingEmail=${{ secrets.EMAIL_RECEIVER }} >> .env
+        export STAGE_UPPER=$(echo ${{ matrix.stage }} | tr '[a-z]' '[A-Z]');
+        echo "STAGE_UPPER=$STAGE_UPPER" >> $GITHUB_ENV
+    - name: 'Set deployment environment'
+      run: |
+        echo ${{ secrets[format('ENV_{0}_YML', env.STAGE_UPPER)] }} > .env.${{ matrix.stage }}.yml
     - name: serverless deploy
       uses: serverless/github-action@v3
       with:
-        args: deploy --stage dev
+        args: deploy --stage ${{ matrix.stage }}
       env:
         SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
         # or if using AWS credentials directly
