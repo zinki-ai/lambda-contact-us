@@ -28,7 +28,7 @@ jobs:
         echo "STAGE_UPPER=$STAGE_UPPER" >> $GITHUB_ENV
     - name: 'Set deployment environment'
       run: |
-        echo "${{ secrets[format('ENV_{0}_YML', env.STAGE_UPPER)] }}" .enc.yml 
+        echo "${{ secrets[format('ENV_{0}_YML', env.STAGE_UPPER)] }}" > .enc.yml 
         cat .enc.yml | base64 -d > .env.${{ matrix.stage }}.yml
 
     - name: serverless deploy
